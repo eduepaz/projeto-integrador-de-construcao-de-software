@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>PulsePass — Comprovante de Entrega: Pacote 2 (Arquitetura e Infraestrutura de Desenvolvimento)</title>
+<style>
+@page {
+    size: A4;
+    margin: 0;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+.page {
+    width: 210mm;
+    height: 297mm;
+    padding: 24mm 24.5mm 18mm 24.5mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+    background: #ffffff;
+}
+.page:last-child {
+    page-break-after: avoid;
+}
+
+/* Header PUCRS */
+.inst-header {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+.inst-header .sub {
+    margin-top: 2px;
+}
+
+/* Titles */
+.doc-title {
+    font-size: 19pt;
+    font-weight: 800;
+    color: #1e1b4b;
+    margin-top: 13px;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+.doc-subtitle {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #4f46e5;
+    margin-top: 4px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+/* Official Links Box */
+.links-box {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 11px 16px;
+    margin-bottom: 16px;
+}
+.links-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+.link-row {
+    margin-bottom: 5px;
+}
+.link-row:last-child {
+    margin-bottom: 0;
+}
+.link-label {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 2px;
+}
+.link-url {
+    font-size: 9.5pt;
+    color: #2563eb;
+    text-decoration: underline;
+    font-weight: 700;
+    word-break: break-all;
+}
+
+/* Section Header */
+.section-title {
+    font-size: 15pt;
+    font-weight: 800;
+    color: #1e1b4b;
+    margin-bottom: 5px;
+}
+.section-desc {
+    font-size: 9.2pt;
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+/* Table */
+.deliverables-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.deliverables-table th {
+    background-color: #ede9fe;
+    color: #3730a3;
+    font-size: 9.5pt;
+    font-weight: 700;
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 2px solid #cbd5e1;
+}
+.deliverables-table td {
+    padding: 11.5px 12px;
+    border-bottom: 1px solid #cbd5e1;
+    vertical-align: top;
+    font-size: 8.75pt;
+    line-height: 1.48;
+}
+.col-item {
+    width: 27%;
+}
+.col-repo {
+    width: 32%;
+}
+.col-desc {
+    width: 41%;
+}
+
+.item-name {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 9.2pt;
+    line-height: 1.35;
+}
+.item-tag {
+    font-weight: 700;
+    color: #4f46e5;
+    font-size: 8.2pt;
+    margin-top: 4px;
+}
+.repo-path {
+    font-family: 'Liberation Mono', monospace;
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 8.2pt;
+    line-height: 1.4;
+    word-break: break-word;
+    text-decoration: none;
+    display: block;
+}
+.repo-path:hover {
+    text-decoration: underline;
+}
+.repo-section {
+    color: #475569;
+    font-style: italic;
+    font-size: 8.2pt;
+    margin-top: 2px;
+    line-height: 1.35;
+}
+.repo-link {
+    display: inline-block;
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: underline;
+    font-size: 8.2pt;
+    margin-top: 5px;
+}
+.desc-text {
+    color: #1e293b;
+    font-size: 8.5pt;
+    line-height: 1.45;
+}
+.desc-text strong {
+    color: #0f172a;
+}
+.desc-text code {
+    font-family: 'Liberation Mono', monospace;
+    font-size: 7.8pt;
+    background: #f1f5f9;
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: #0f172a;
+}
+
+/* Complementary Docs */
+.comp-docs {
+    margin-top: 24px;
+    font-size: 8.75pt;
+    line-height: 1.55;
+}
+.comp-title {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 7px;
+    font-size: 9.2pt;
+}
+.comp-list {
+    list-style: none;
+    padding-left: 0;
+}
+.comp-list li {
+    margin-bottom: 4px;
+    color: #1e293b;
+}
+.comp-list strong {
+    color: #1e293b;
+}
+.comp-list .code {
+    font-family: 'Liberation Mono', monospace;
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 8.2pt;
+}
+.comp-list a {
+    color: #2563eb;
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+/* Footer elements */
+.footer-note {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 8.5pt;
+    color: #64748b;
+}
+.page-num {
+    position: absolute;
+    bottom: 18mm;
+    right: 24.5mm;
+    font-size: 9.5pt;
+    color: #1e293b;
+    font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+    <div class="inst-header">
+        <div>PONTIFÍCIA UNIVERSIDADE CATÓLICA DO RIO GRANDE DO SUL — PUCRS</div>
+        <div class="sub">ESCOLA POLITÉCNICA | CONSTRUÇÃO DE SOFTWARE – 2026/2</div>
+    </div>
+
+    <div class="doc-title">PulsePass — Plataforma de Megaeventos</div>
+    <div class="doc-subtitle">Comprovante de Entrega: Pacote 2 (Arquitetura e Infraestrutura de Desenvolvimento)</div>
+
+    <div class="links-box">
+        <div class="links-title">Links Oficiais do Projeto</div>
+        <div class="link-row">
+            <div class="link-label">Repositório GitHub:</div>
+            <a class="link-url" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software">https://github.com/eduepaz/projeto-integrador-de-construcao-de-software</a>
+        </div>
+        <div class="link-row">
+            <div class="link-label">Protótipo Interativo / Figma Make (Publicado):</div>
+            <a class="link-url" href="https://yoyo-jump-80482055.figma.site">https://yoyo-jump-80482055.figma.site</a>
+        </div>
+    </div>
+
+    <div class="section-title">Mapeamento dos Entregáveis do Pacote 2</div>
+    <div class="section-desc">
+        Todos os itens obrigatórios estipulados no edital da disciplina foram formalizados e versionados no repositório. A relação completa dos caminhos e descrições dos artefatos encontra-se abaixo:
+    </div>
+
+    <table class="deliverables-table">
+        <thead>
+            <tr>
+                <th class="col-item">Item do Pacote 2</th>
+                <th class="col-repo">Caminho no Repositório</th>
+                <th class="col-desc">Conteúdo e Destaques</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-item">
+                    <div class="item-name">1. Descrição da Arquitetura C4</div>
+                    <div class="item-tag">Arquitetura &amp; Componentes</div>
+                </td>
+                <td class="col-repo">
+                    <a class="repo-path" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#2-arquitetura-de-software-no-modelo-c4">production_artifacts/<br>Technical_Specification.md</a>
+                    <div class="repo-section">(Seção 2: Arquitetura de Software no Modelo C4)</div>
+                    <a class="repo-link" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#2-arquitetura-de-software-no-modelo-c4">Acessar no GitHub →</a>
+                </td>
+                <td class="col-desc desc-text">
+                    Modelagem C4 em 3 níveis (Contexto de Sistema, Contêineres e Componentes de Pedidos/Checkout e Catálogo/Inventário), FSM de ciclo de vida de Reserva e Pedido, protocolo da Saga Coreografada com compensação para pagamentos tardios/recusados e API Gateway Nginx com IdP Keycloak (OIDC/JWT).
+                </td>
+            </tr>
+            <tr>
+                <td class="col-item">
+                    <div class="item-name">2. Modelo de Dados Conceitual</div>
+                    <div class="item-tag">Dados &amp; Persistência</div>
+                </td>
+                <td class="col-repo">
+                    <a class="repo-path" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#3-modelo-de-dados-conceitual-e-f%C3%ADsico">production_artifacts/<br>Technical_Specification.md</a>
+                    <div class="repo-section">(Seção 3: Modelo de Dados Conceitual e Físico)</div>
+                    <a class="repo-link" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#3-modelo-de-dados-conceitual-e-f%C3%ADsico">Acessar no GitHub →</a>
+                </td>
+                <td class="col-desc desc-text">
+                    Diagrama Entidade-Relacionamento (DER) lógico unificado com assentos numerados e lotes gerais, padrão Database-per-Service no PostgreSQL (sem FKs cross-db), restrições físicas GiST/B-tree para garantia estrita de Zero Overselling e controle de expiração por TTL de 10 min.
+                </td>
+            </tr>
+            <tr>
+                <td class="col-item">
+                    <div class="item-name">3. Estrutura de Mensageria Kafka</div>
+                    <div class="item-tag">Streaming &amp; Eventos</div>
+                </td>
+                <td class="col-repo">
+                    <a class="repo-path" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#4-estrutura-de-mensageria-e-streaming-com-apache-kafka">production_artifacts/<br>Technical_Specification.md</a>
+                    <div class="repo-section">(Seção 4: Estrutura de mensageria e streaming com Apache Kafka)</div>
+                    <a class="repo-link" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#4-estrutura-de-mensageria-e-streaming-com-apache-kafka">Acessar no GitHub →</a>
+                </td>
+                <td class="col-desc desc-text">
+                    Topologia com 6 tópicos de domínio e comandos de saga, ordenação total por chaves determinísticas (<code>reservation_id</code>, <code>order_id</code>), padrão Transactional Outbox para eliminar escrita dupla, consumidores idempotentes com deduplicação e resiliência com DLQ, quarentena e replay.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-num">1</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+    <table class="deliverables-table" style="margin-top: 2px;">
+        <thead>
+            <tr>
+                <th class="col-item">Item do Pacote 2</th>
+                <th class="col-repo">Caminho no Repositório</th>
+                <th class="col-desc">Conteúdo e Destaques</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-item">
+                    <div class="item-name">4. Pipeline de Desenvolvimento</div>
+                    <div class="item-tag">CI/CD &amp; Qualidade</div>
+                </td>
+                <td class="col-repo">
+                    <a class="repo-path" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#5-pipeline-de-desenvolvimento-e-automa%C3%A7%C3%A3o-cicd">production_artifacts/<br>Technical_Specification.md</a>
+                    <div class="repo-section">(Seção 5: Pipeline de Desenvolvimento e Automação CI/CD)</div>
+                    <a class="repo-link" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#5-pipeline-de-desenvolvimento-e-automa%C3%A7%C3%A3o-cicd">Acessar no GitHub →</a>
+                </td>
+                <td class="col-desc desc-text">
+                    Esteira automatizada em GitHub Actions para Pull Requests e merges na <code>develop</code> e <code>main</code>: verificação estática de código (linters Ruff, Flake8, Black), varredura Trivy, testes unitários com cobertura mínima exigida de 70% (pytest-cov), testes de integração com Testcontainers reais (Kafka, Postgres, Redis) e build Docker.
+                </td>
+            </tr>
+            <tr>
+                <td class="col-item">
+                    <div class="item-name">5. Processo de GCS</div>
+                    <div class="item-tag">Governança &amp; Configuração</div>
+                </td>
+                <td class="col-repo">
+                    <a class="repo-path" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#6-processo-de-gerenciamento-da-configura%C3%A7%C3%A3o-de-software-gcs">production_artifacts/<br>Technical_Specification.md</a>
+                    <div class="repo-section">(Seção 6: Processo de Gerenciamento da Configuração de Software GCS)</div>
+                    <a class="repo-link" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md#6-processo-de-gerenciamento-da-configura%C3%A7%C3%A3o-de-software-gcs">Acessar no GitHub →</a>
+                </td>
+                <td class="col-desc desc-text">
+                    Governança baseada em Gitflow adaptado (branches <code>main</code>, <code>develop</code>, <code>feature/*</code>), branch protection com code review obrigatório (mín. 1 aprovação) e CI bloqueante, padrão Conventional Commits, baselines formais versionadas com Git Tags semânticas (<code>v0.2.0-pacote2</code>) e rastreabilidade de código IA.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="comp-docs">
+        <div class="comp-title">Documentos Complementares no Repositório:</div>
+        <ul class="comp-list">
+            <li>• <strong>Índice Unificado do Pacote 2:</strong> <a class="code" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/docs/pacote-2/README.md">docs/pacote-2/README.md</a> (<a href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/docs/pacote-2/README.md">Ver no GitHub</a>)</li>
+            <li>• <strong>Especificação Técnica Completa do Pacote 2:</strong> <a class="code" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md">production_artifacts/Technical_Specification.md</a> (<a href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/production_artifacts/Technical_Specification.md">Ver no GitHub</a>)</li>
+            <li>• <strong>Especificação Geral do Projeto:</strong> <a class="code" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/ESPECIFICACAO_PROJETO.md">ESPECIFICACAO_PROJETO.md</a> (<a href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/blob/main/ESPECIFICACAO_PROJETO.md">Ver no GitHub</a>)</li>
+            <li>• <strong>Protótipo Interativo / Design Reference:</strong> <a class="code" href="https://github.com/eduepaz/projeto-integrador-de-construcao-de-software/tree/main/design-reference">design-reference/</a> (React 19 + TypeScript + Tailwind CSS v4) — <a href="https://yoyo-jump-80482055.figma.site">yoyo-jump-80482055.figma.site</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-note">
+        PulsePass © 2026 — Disciplina de Construção de Software — Escola Politécnica / PUCRS
+    </div>
+
+    <div class="page-num">2</div>
+</div>
+
+</body>
+</html>
