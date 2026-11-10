@@ -52,10 +52,31 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
     healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 9092 || exit 1"]
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 || nc -z localhost 9092 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  kafka-init-topics:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: pulsepass-kafka-init-topics
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: [ "bash", "-c" ]
+    command: |
+      "
+      echo 'Aguardando Kafka broker...'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      echo 'Criando tópicos de mensageria da plataforma PulsePass...'
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic reservations.events --partitions 6 --replication-factor 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic orders.events --partitions 6 --replication-factor 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic payments.events --partitions 6 --replication-factor 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic tickets.events --partitions 6 --replication-factor 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic telemetry.events --partitions 12 --replication-factor 1
+      echo 'Tópicos criados com sucesso!'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -112,7 +133,7 @@ services:
     container_name: pulsepass-frontend
     restart: unless-stopped
     ports:
-      - "5173:5173"
+      - "5173:80"
     environment:
       VITE_API_URL: http://localhost:3000
     depends_on:
