@@ -1,0 +1,23 @@
+{
+  "name": "pulsepass-monorepo",
+  "version": "2.0.0",
+  "description": "PulsePass - High Availability Ticketing, Atomic Reservation & Real-time Access Control Platform",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=backend",
+    "dev:all": "concurrently \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspace=backend",
+    "test:coverage": "npm run test:coverage --workspace=backend",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down -v",
+    "docker:logs": "docker compose logs -f"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

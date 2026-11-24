@@ -9,8 +9,9 @@ Este diretório contém a documentação integral dos entregáveis correspondent
 
 ## Estrutura dos Entregáveis do Pacote 1
 
-O documento mestre detalhado com todas as especificações formais, diagramas Mermaid, wireframes estruturais e critérios de aceite está disponível em:
-👉 **[`production_artifacts/Technical_Specification.md`](../../production_artifacts/Technical_Specification.md)**
+O documento mestre detalhado com todas as especificações formais, diagramas Mermaid, wireframes estruturais e critérios de aceite está arquivado em:
+👉 **[`docs/pacote-1/Technical_Specification_Pacote_1.md`](Technical_Specification_Pacote_1.md)** (cópia de arquivo do Pacote 1)
+e serviu de base para a evolução técnica no documento central de especificações.
 
 Abaixo está o índice temático de cada um dos cinco tópicos exigidos no Pacote 1:
 
